@@ -6,6 +6,11 @@
 
 (select-module liv.cl)
 
+(define (cl:signum x)
+  (if (zero? x)
+      x
+      (/ x (abs x))))
+
 (define cl:remove-if-not filter)
 
 (define cl:remove-if remove)
