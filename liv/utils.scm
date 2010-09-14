@@ -37,5 +37,7 @@
 (define (range min max)
   (iota (+ (- max min) 1) min))
 
+(define (list-repeat n obj)
+  (list-tabulate n (lambda args obj)))
 
 (provide "liv/utils")
