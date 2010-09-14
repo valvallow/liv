@@ -4,6 +4,7 @@
 (define-module liv.onlisp.utils
   (use srfi-1)
   (use util.list)
+  (use gauche.collection)
   (export-all))
 
 (select-module liv.onlisp.utils)
