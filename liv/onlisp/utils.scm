@@ -6,6 +6,8 @@
   (use util.list)
   (export-all))
 
+(select-module liv.onlisp.utils)
+
 (define (single ls)
   (and (pair? ls)
        (null? (cdr ls))))
@@ -91,7 +93,85 @@
                          (else (values ret max)))))
                '() -inf.0 ls))))
 
-(mostn length '((a b)(a b c)(d)(e f g)))
+(define (mapa-b fn a b . step)
+  (let-optionals* step ((step 1))
+    (let rec ((i a)(end b)(acc '()))
+      (if (< end i)
+           (reverse acc)
+           (rec (+ i step) end (cons (fn i) acc))))))
+
+(define (map0-n fn n)
+  (mapa-b fn 0 n))
+
+(define (map1-n fn n)
+  (mapa-b fn 1 n))
+
+(define (map-> fn start test-fn succ-fn)
+  (let rec ((i start)(acc '()))
+    (if (test-fn i)
+        (reverse acc)
+        (rec (succ-fn i)(cons (fn i) acc)))))
+
+(define (mappend fn . lss)
+  (apply append (apply map fn lss)))
+
+(define (rmap fn . lss)
+  (apply map (lambda (e)
+               (if (list? e)
+                   (rmap fn e)
+                   (fn e))) lss))
+
+(define (mkstr . args)
+  (with-output-to-string
+    (lambda ()
+      (dolist (a args)
+        (display a)))))
+
+(define (symb . args)
+  (string->symbol (apply mkstr args)))
+
+(define (explode sym)
+  (map (compose string->symbol string)
+       ((compose string->list symbol->string) sym)))
+
+(define (fif pred then . else)
+  (let-optionals* else ((else #f))
+    (lambda x
+      (if (apply pred x)
+          (apply then x)
+          (if else
+              (apply else x))))))
+
+(define (fint fn . funs)
+  (if (null? funs)
+      fn
+      (let1 chain (apply fint funs)
+        (lambda x
+          (and (apply fn x)(apply chain x))))))
+
+(define (fun fn . funs)
+  (if (null? funs)
+      fn
+      (let1 chain (apply fint funs)
+        (lambda x
+          (or (apply fn x)(apply chain x))))))
+
+(define (lrec rec . base)
+  (let-optionals* base ((base '()))
+    (letrec ((self (lambda (lst)
+                     (if (null? lst)
+                         (if (procedure? base)
+                             (base)
+                             base)
+                         (rec (car lst)
+                              (lambda ()
+                                (self (cdr lst))))))))
+      self)))
+
+
+
 
 
 (provide "lib.onlisp.utils")
+
+
