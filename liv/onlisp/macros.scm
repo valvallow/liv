@@ -14,4 +14,4 @@
               syms)
      ,@body))
 
-(provide "lib.onlisp.macros")
+(provide "lib/onlisp/macros")

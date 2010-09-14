@@ -1,12 +1,12 @@
 ;; debug tools
 ;; PAIP(ŽÀ—p Common Lisp) -  P.116 - 4.10
 
-(define-module liv.debugs
+(define-module liv.paip.debugs
   (use srfi-1)
   (use gauche.parameter)
   (export-all))
 
-(select-module liv.debugs)
+(select-module liv.paip.debugs)
 
 (define *dbg-ids* (make-parameter '()))
 
@@ -33,4 +33,4 @@
       (display (apply string-append (make-list indent " ")) port)
       (apply format port format-string args))))
 
-(provide "liv/debugs")
+(provide "liv/paip/debugs")
