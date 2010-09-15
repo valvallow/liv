@@ -13,28 +13,28 @@
          val
          (coalesce x ...)))))
 
-(define-syntax if-true
-  (syntax-rules ()
-    ((_ pred exp)
-     (if pred exp #f))))
+;; (define-syntax if-true
+;;   (syntax-rules ()
+;;     ((_ pred exp)
+;;      (if pred exp #f))))
 
-(define-syntax let-opt1
-  (syntax-rules ()
-    ((_ args name val body ...)
-     (let-optionals* args ((name val))
-                    body ...))))
+;; (define-syntax let-opt1
+;;   (syntax-rules ()
+;;     ((_ args name val body ...)
+;;      (let-optionals* args ((name val))
+;;                     body ...))))
 
-(define-syntax ext-let
-  (syntax-rules ()
-    ((_ "sub" ((var1 val1) ...)(var2 var3 ...)(val2 val3 ...) body ...)
-     (ext-let "sub" ((var1 val1) ... (var2 val2))(var3 ...)(val3 ...) body ...))
-    ((_ "sub" ((var val) ...)()() body ...)
-     (let ((var val) ...)
-       body ...))
-    ((_ ()() body ...)
-     (ext-let "sub" ()()() body ...))
-    ((_ (var1 var2 ...)(val1 val2 ...) body ...)
-     (ext-let "sub" ((var1 val1))(var2 ...)(val2 ...) body ...))))
+;; (define-syntax ext-let
+;;   (syntax-rules ()
+;;     ((_ "sub" ((var1 val1) ...)(var2 var3 ...)(val2 val3 ...) body ...)
+;;      (ext-let "sub" ((var1 val1) ... (var2 val2))(var3 ...)(val3 ...) body ...))
+;;     ((_ "sub" ((var val) ...)()() body ...)
+;;      (let ((var val) ...)
+;;        body ...))
+;;     ((_ ()() body ...)
+;;      (ext-let "sub" ()()() body ...))
+;;     ((_ (var1 var2 ...)(val1 val2 ...) body ...)
+;;      (ext-let "sub" ((var1 val1))(var2 ...)(val2 ...) body ...))))
 
 (define-syntax across
   (syntax-rules ()
@@ -150,5 +150,15 @@
 
 (define-macro (& exp . body)
   `(let1 <> ,exp ,@body))
+
+(define-syntax mac
+  (syntax-rules ()
+    ((_ exp)
+     (macroexpand 'exp))))
+
+(define-syntax mac1
+  (syntax-rules ()
+    ((_ exp)
+     (macroexpand-1 'exp))))
 
 (provide "liv/macros")
