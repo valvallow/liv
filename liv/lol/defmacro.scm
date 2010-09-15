@@ -5,7 +5,7 @@
   (use liv.onlisp.utils)
   (use gauche.parameter)
   (export *g!-symbol* *o!-symbol* *defmacro!-symbol-position*
-          defmacro defmacro/g! defmacro!))
+          apply-defmacro!-config! defmacro defmacro/g! defmacro!))
 (select-module liv.lol.defmacro)
 
 
@@ -13,27 +13,36 @@
 (define *o!-symbol* (make-parameter 'o!))
 (define *defmacro!-symbol-position* (make-parameter 'prefix))
 
-(define (mark-position)
+(define %string-append string-append)
+(define %mark-position string-prefix?)
+(define %string-drop string-drop)
+
+(define (apply-defmacro!-config!)
   (case (*defmacro!-symbol-position*)
-    ((prefix) string-prefix?)
-    ((sufix) string-prefix?)))
+    ((prefix)
+     (set! %string-append string-append)
+     (set! %mark-position string-prefix?)
+     (set! %string-drop string-drop))
+    ((sufix)
+     (set! %string-append (lambda (s1 s2)
+                            (string-append s2 s1)))
+     (set! %mark-position string-suffix?)
+     (set! %string-drop string-drop-right))))
 
 (define (mark-symbol? sym mark pred)
   (pred (symbol->string mark)(symbol->string sym)))
 
 (define (g!-symbol? sym)
-  (mark-symbol? sym (*g!-symbol*)(mark-position)))
+  (mark-symbol? sym (*g!-symbol*) %mark-position))
 
 (define (o!-symbol? sym)
-  (mark-symbol? sym (*o!-symbol*)(mark-position)))
+  (mark-symbol? sym (*o!-symbol*) %mark-position))
 
 (define (remove-mark sym)
   (let ((symstr (symbol->string sym))
         (gs (symbol->string (*g!-symbol*)))
         (os (symbol->string (*o!-symbol*))))
-    (case (*defmacro!-symbol-position*)
-      ((prefix)(string-drop symstr (string-length os)))
-      ((sufix)(string-drop-right symstr (string-length os))))))
+      (%string-drop symstr (string-length os))))
 
 (define (o!-symbol->g!-symbol sym)
   (let ((symstr (symbol->string sym))
@@ -41,9 +50,7 @@
         (os (symbol->string (*o!-symbol*))))
     (let1 rsym (remove-mark sym)
       (string->symbol
-       (case (*defmacro!-symbol-position*)
-         ((prefix)(string-append gs rsym))
-         ((sufix)(string-append rsym gs)))))))
+       (string-append gs rsym)))))
 
 (define-macro (defmacro/g! name args . body)
   (let1 syms (cl:remove-duplicates (filter g!-symbol? (flatten body)))
@@ -63,5 +70,6 @@
   (syntax-rules ()
     ((_ name (arg ...) body ...)
      (define-macro (name arg ...) body ...))))
+
 
 (provide "liv/lol/defmacro")
