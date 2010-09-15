@@ -15,6 +15,15 @@
 
 (define cl:remove-if remove)
 
+(define (cl:remove-duplicates ls . eq?)
+  (let-optionals* eq? ((eq? equal?))
+    (pair-fold
+     (lambda (pr acc)
+       (if (find (pa$ eq? (car pr))(cdr pr))
+           acc
+           (append acc (list (car pr)))))
+     '() ls)))
+
 (define-syntax cl:labels
   (syntax-rules ()
     ((_ ((name (var ...) proc-body ...) ...) body ...)
