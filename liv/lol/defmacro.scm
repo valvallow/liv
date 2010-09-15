@@ -46,18 +46,13 @@
   (mark-symbol? sym (*o!-symbol*) %mark-position))
 
 (define (remove-mark sym)
-  (let ((symstr (symbol->string sym))
-        (gs (symbol->string (*g!-symbol*)))
-        (os (symbol->string (*o!-symbol*))))
-      (%string-drop symstr (string-length os))))
+  (%string-drop (symbol->string sym)
+                (string-length (symbol->string (*o!-symbol*)))))
 
 (define (o!-symbol->g!-symbol sym)
-  (let ((symstr (symbol->string sym))
-        (gs (symbol->string (*g!-symbol*)))
-        (os (symbol->string (*o!-symbol*))))
-    (let1 rsym (remove-mark sym)
-      (string->symbol
-       (%string-append gs rsym)))))
+  (string->symbol
+   (%string-append (symbol->string (*g!-symbol*))
+                   (remove-mark sym))))
 
 (define-macro (defmacro/g! name args . body)
   (let1 syms (cl:remove-duplicates (filter g!-symbol? (flatten body)))
