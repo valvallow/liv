@@ -3,6 +3,7 @@
   (use srfi-13)
   (use liv.cl)
   (use liv.onlisp.lists)
+  (use liv.lists)
   (use gauche.parameter)
   (export *g!-symbol* *o!-symbol* *defmacro!-symbol-position*
           apply-defmacro!-config! defmacro defmacro/g! defmacro!))
@@ -63,12 +64,15 @@
                     `(,s (gensym ,(remove-mark s)))) syms)
          ,@body))))
 
-(define-macro (defmacro! name . body)
+(defmacro (defmacro! name . body)
   (let* ((args (cdr name))
-         (os (filter o!-symbol? args))
+         (os (filter o!-symbol? (if (dotted-list? args)
+                                    (dotted-list->list args)
+                                    args)))
          (gs (map o!-symbol->g!-symbol os)))
     `(defmacro/g! (,(car name) ,@args)
        `(let ,(map list (list ,@gs)(list ,@os))
           ,(begin ,@body)))))
+
 
 (provide "liv/lol/defmacro")

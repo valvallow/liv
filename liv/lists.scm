@@ -4,6 +4,10 @@
   (export tree-map tree-fold cars cdrs cars+cdrs but-last range list-re))
 (select-module liv.lists)
 
+(define (dotted-list->list dl . terminal-fun)
+  (let-optionals* terminal-fun ((terminal-fun (lambda _ '())))
+    (unfold not-pair? car cdr dl terminal-fun)))
+
 (define (cars . ls)
   (unfold null? caar cdr ls))
 
