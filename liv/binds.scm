@@ -41,5 +41,12 @@
 (define-macro (& exp . body)
   `(let1 <> ,exp ,@body))
 
+(define-syntax allf
+  (syntax-rules ()
+    ((_ val arg1 arg2 ...)
+     (let ((v val))
+       (set! arg1 v)
+       (set! arg2 v)...))))
+
 
 (provide "liv/binds")
