@@ -1,7 +1,7 @@
-(define-module liv.paip.utils
+(define-module liv.paip.memo
   (export-all))
 
-(select-module liv.paip.utils)
+(select-module liv.paip.memo)
 
 (define *memo-hash-tables* (make-hash-table))
 
@@ -39,4 +39,4 @@
          body ...)
        (memoize fn)))))
 
-(provide "liv/paip/utils")
+(provide "liv/paip/memo")

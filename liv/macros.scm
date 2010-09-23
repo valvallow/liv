@@ -123,30 +123,30 @@
        (set! arg1 v)
        (set! arg2 v)...))))
 
-(define-syntax define-syntax-rule
-  (syntax-rules ()
-    ((_ (name (literal ...) arg ...)(body ...))
-     (define-syntax name
-       (syntax-rules (literal ...)
-         ((_ arg ...)
-          (body ...)))))
-    ((_ (name arg ...)(body ...))
-     (define-syntax-rule (name () arg ...)(body ...)))))
+;; (define-syntax define-syntax-rule
+;;   (syntax-rules ()
+;;     ((_ (name (literal ...) arg ...)(body ...))
+;;      (define-syntax name
+;;        (syntax-rules (literal ...)
+;;          ((_ arg ...)
+;;           (body ...)))))
+;;     ((_ (name arg ...)(body ...))
+;;      (define-syntax-rule (name () arg ...)(body ...)))))
 
-(define-syntax try
-  (syntax-rules ()
-    ((_ var a . b)
-     (let/cc success
-       (let/cc var
-         (success a)) . b))))
+;; (define-syntax try
+;;   (syntax-rules ()
+;;     ((_ var a . b)
+;;      (let/cc success
+;;        (let/cc var
+;;          (success a)) . b))))
 
-(define-syntax implecations
-  (syntax-rules (=>)
-    ((_ (pred => body ...) ...)
-     (begin
-       (when pred
-         body ...)
-       ...))))
+;; (define-syntax implecations
+;;   (syntax-rules (=>)
+;;     ((_ (pred => body ...) ...)
+;;      (begin
+;;        (when pred
+;;          body ...)
+;;        ...))))
 
 (define-macro (& exp . body)
   `(let1 <> ,exp ,@body))
