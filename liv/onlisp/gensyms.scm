@@ -3,7 +3,7 @@
 
 (define-module liv.onlisp.gensyms
   (use liv.cl)
-  (export-all))
+  (export with-gensyms))
 
 (select-module liv.onlisp.gensyms)
 

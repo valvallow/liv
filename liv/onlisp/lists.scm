@@ -2,7 +2,9 @@
   (use srfi-1)
   (use util.list)
   (use gauche.collection)
-  (export-all))
+  (export single? append1 mklist flatten group prune
+          before after duplicate split-if most best
+          mapa-b map0-n map1-n mappend rmap lrec))
 
 (select-module liv.onlisp.lists)
 
@@ -113,10 +115,10 @@
   (apply append (apply map fn lss)))
 
 ;; rmap
-(define (tree-map fn . lss)
+(define (rmap fn . lss)
   (apply map (lambda (e)
                (if (list? e)
-                   (tree-map fn e)
+                   (rmap fn e)
                    (fn e))) lss))
 
 (define (lrec rec . base)

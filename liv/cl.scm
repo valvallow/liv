@@ -2,7 +2,8 @@
 
 (define-module liv.cl
   (use srfi-1)
-  (export-all))
+  (export cl:signum cl:remove-if cl:remove-if-not
+          cl:remove-duplicates cl:labels))
 
 (select-module liv.cl)
 
