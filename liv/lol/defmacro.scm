@@ -54,23 +54,21 @@
    (%string-append (symbol->string (*g!-symbol*))
                    (remove-mark sym))))
 
-(define-macro (defmacro/g! name . body)
+(define defmacro define-macro)
+
+(defmacro (defmacro/g! name . body)
   (let1 syms (cl:remove-duplicates (filter g!-symbol? (flatten body)))
-    `(define-macro (,(car name) ,@(cdr name))
+    `(defmacro (,(car name) ,@(cdr name))
        (let ,(map (lambda (s)
                     `(,s (gensym ,(remove-mark s)))) syms)
          ,@body))))
 
 (define-macro (defmacro! name . body)
   (let* ((args (cdr name))
-         (name (car name))
          (os (filter o!-symbol? args))
          (gs (map o!-symbol->g!-symbol os)))
-    `(defmacro/g! (,name ,@args)
+    `(defmacro/g! (,(car name) ,@args)
        `(let ,(map list (list ,@gs)(list ,@os))
           ,(begin ,@body)))))
-
-(define defmacro define-macro)
-
 
 (provide "liv/lol/defmacro")
