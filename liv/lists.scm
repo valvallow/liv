@@ -1,7 +1,8 @@
 (define-module liv.lists
   (use srfi-1)
   (use srfi-8)
-  (export tree-map tree-fold cars cdrs cars+cdrs but-last range list-re))
+  (export tree-map tree-fold cars cdrs cars+cdrs but-last range list-ref
+          dotted-list->list))
 (select-module liv.lists)
 
 (define (dotted-list->list dl . terminal-fun)
