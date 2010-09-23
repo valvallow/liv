@@ -38,8 +38,8 @@
        (let ((var v) ...)
          body ...)))))
 
-(define-macro (& exp . body)
-  `(let1 <> ,exp ,@body))
+;; (define-macro (& exp . body)
+;;   `(let1 <> ,exp ,@body))
 
 (define-syntax allf
   (syntax-rules ()
