@@ -13,6 +13,13 @@
          val
          (coalesce x ...)))))
 
+(define-syntax label
+  (syntax-rules ()
+    ((_ (name (var ...) fbody ...) body ...)
+     (letrec ((name (lambda (var ...)
+                      fbody ...)))
+       body ...))))
+
 ;; (define-syntax if-true
 ;;   (syntax-rules ()
 ;;     ((_ pred exp)
