@@ -48,5 +48,10 @@
        (set! arg1 v)
        (set! arg2 v)...))))
 
+;; http://github.com/quek/quek/blob/master/base.lisp
+(define-syntax call-with-ca/dr
+  (syntax-rules ()
+    ((_ ls proc)
+     (proc (car ls)(cdr ls)))))
 
 (provide "liv/binds")

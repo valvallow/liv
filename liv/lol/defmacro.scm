@@ -2,7 +2,7 @@
   (use srfi-1)
   (use srfi-13)
   (use liv.cl)
-  (use liv.onlisp.utils)
+  (use liv.onlisp.lists)
   (use gauche.parameter)
   (export *g!-symbol* *o!-symbol* *defmacro!-symbol-position*
           apply-defmacro!-config! defmacro defmacro/g! defmacro!))
