@@ -2,7 +2,7 @@
   (use srfi-1) ; list-tabulate, drop
   (use srfi-9) ; define-record-type
   (use util.list) ; slices
-  (use liv.lists) ; list-repeat
+  (use liv.list) ; list-repeat
   (export-all))
 (select-module liv.matrix)
 
