@@ -57,23 +57,11 @@
               (+ (point-y p1)
                  (point-y p2))))
 
-(define (point-hold? p matrix)
-  (and (not (negative-point? p))
-       (receive (w h)(matrix-size matrix)
-         (and (< (point-x p) w)
-              (< (point-y p) h)))))
-
-(define (neighborhood-points cell matrix
-                             :optional (relatives relatives))
-  (filter (cut point-hold? <> matrix)
-          (map (lambda (xy p)
-                 (add-point p (make-point (car xy)(cadr xy))))
-               relatives
-               (list-repeat (length relatives)(cell-point cell)))))
-
-(define (neighborhood-cells cell matrix)
-  (let1 np (neighborhood-points cell matrix)
-    (map (lambda (p)
-           (ref-matrix-with-point matrix p)) np)))
+(define (print-matrix matrix . keywords)
+  (let-keywords* keywords ((printer print)
+                           (row-mapper map)
+                           (element-fun identity))
+    (for-each (lambda (row)
+                (printer (row-mapper element-fun row))) matrix)))
 
 (provide "liv/matrix")
