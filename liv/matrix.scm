@@ -48,6 +48,21 @@
                   (inc! y)))
          matrix)))
 
+(define (map-matrix-with-index proc matrix)
+  (let ((x 0)(y 0))
+    (map (lambda (row)
+           (set! x 0)
+           (rlet1 r (map (lambda (e)
+                           (rlet1 r (proc e x y)
+                                  (inc! x)))
+                         row)
+                  (inc! y)))
+         matrix)))
+
+(define (map-matrix-with-point proc matrix)
+  (map-matrix-with-index (lambda (e x y)
+                           (proc e (make-point x y))) matrix))
+
 (define (negative-point? p)
   (any negative? (list (point-x p)(point-y p))))
 
