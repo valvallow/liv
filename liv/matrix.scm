@@ -1,5 +1,5 @@
 (define-module liv.matrix
-  (use srfi-1) ; list-tabulate
+  (use srfi-1) ; list-tabulate, drop
   (use srfi-9) ; define-record-type
   (use util.list) ; slices
   (use liv.lists) ; list-repeat
@@ -36,5 +36,13 @@
                            (element-fun identity))
     (for-each (lambda (row)
                 (printer (row-mapper element-fun row))) matrix)))
+
+(define (matrix-row-ref matrix y)
+  (list-ref matrix y))
+
+(define (matrix-col-ref matrix x)
+  (fold-right (lambda (row acc)
+                (cons (car (drop row x))
+                      acc)) '() matrix))
 
 (provide "liv/matrix")
