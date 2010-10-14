@@ -13,7 +13,7 @@
 (define (map-matrix proc matrix)
   (map (pa$ map proc) matrix))
 
-(define (ref-matrix matrix x y)
+(define (matrix-ref matrix x y)
   (list-ref (list-ref matrix y) x))
 
 (define (matrix-size matrix)
