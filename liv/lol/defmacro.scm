@@ -74,5 +74,4 @@
        `(let ,(map list (list ,@gs)(list ,@os))
           ,(begin ,@body)))))
 
-
 (provide "liv/lol/defmacro")
