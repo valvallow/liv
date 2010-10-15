@@ -13,6 +13,12 @@
 (define (matrix-ref matrix x y)
   (list-ref (list-ref matrix y) x))
 
+(define (matrix-set! matrix x y val)
+  (let1 row (list-ref matrix y)
+    (let1 rest (drop row x)
+      (set-car! rest val)
+      matrix)))
+
 (define (matrix-size matrix)
   (values (length matrix)(length (car matrix))))
 
