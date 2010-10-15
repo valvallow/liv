@@ -19,6 +19,11 @@
       (set-car! rest val)
       matrix)))
 
+(define (matrix-copy matrix)
+  (fold-right (lambda (row acc)
+                (cons (list-copy row) acc))
+              '() matrix))
+
 (define (matrix-size matrix)
   (values (length matrix)(length (car matrix))))
 
