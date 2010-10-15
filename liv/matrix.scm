@@ -10,25 +10,37 @@
     (let1 size (* w h)
       (slices (list-tabulate size seed-fun) w)))
 
-(define (map-matrix proc matrix)
-  (map (pa$ map proc) matrix))
-
 (define (matrix-ref matrix x y)
   (list-ref (list-ref matrix y) x))
 
 (define (matrix-size matrix)
   (values (length matrix)(length (car matrix))))
 
-(define (map-matrix-with-index proc matrix)
+(define (walk-matrix walker proc matrix)
+  (walker (pa$ walker proc) matrix))
+
+(define (map-matrix proc matrix)
+  (walk-matrix map proc matrix))
+
+(define (for-each-matrix proc matrix)
+  (walk-matrix for-each proc matrix))
+
+(define (walk-matrix-with-matrix walker proc matrix)
   (let ((x 0)(y 0))
-    (map (lambda (row)
-           (set! x 0)
-           (rlet1 r (map (lambda (e)
-                           (rlet1 r (proc e x y)
-                                  (inc! x)))
-                         row)
-                  (inc! y)))
-         matrix)))
+    (walker (lambda (row)
+              (set! x 0)
+              (rlet1 r (walker (lambda (e)
+                                 (rlet1 r (proc e x y)
+                                        (inc! x)))
+                               row)
+                     (inc! y)))
+            matrix)))
+
+(define (map-matrix-with-index proc matrix)
+  (walk-matrix-with-matrix map proc matrix))
+
+(define (for-each-matrix-with-index proc matrix)
+  (walk-matrix-with-matrix for-each proc matrix))
 
 (define (print-matrix matrix . keywords)
   (let-keywords* keywords ((printer print)
