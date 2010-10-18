@@ -17,10 +17,13 @@
                    (rlet1 r (apply fn args)
                           (hash-table-put! cache key r))))))))
 
-(define-syntax memoize
-  (syntax-rules ()
-    ((_ fn . args)
-     (set! fn (apply memo fn 'fn args)))))
+;; (define-syntax memoize
+;;   (syntax-rules ()
+;;     ((_ fn . args)
+;;      (set! fn (apply memo fn 'fn args)))))
+
+(define-macro (memoize fn . args)
+  `(set! ,fn (apply memo ,fn ',fn ,args)))
 
 (define (clear-memo fn-name)
   (let1 cache (hash-table-get *memo-hash-tables* fn-name #f)
@@ -31,12 +34,18 @@
     ((_ fn)
      (clear-memo 'fn))))
 
-(define-syntax define-memo
-  (syntax-rules ()
-    ((_ (fn arg ...) body ...)
-     (begin
-       (define (fn arg ...)
-         body ...)
-       (memoize fn)))))
+;; (define-syntax define-memo
+;;   (syntax-rules ()
+;;     ((_ (fn arg ...) body ...)
+;;      (begin
+;;        (define (fn arg ...)
+;;          body ...)
+;;        (memoize fn)))))
+
+(define-macro (define-memo name . body)
+  `(begin
+     (define (,(car name) ,@(cdr name))
+       ,@body)
+     (memoize ,(car name))))
 
 (provide "liv/paip/memo")
