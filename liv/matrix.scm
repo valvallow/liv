@@ -24,8 +24,15 @@
                 (cons (list-copy row) acc))
               '() matrix))
 
+(define (matrix-col-length matrix)
+  (length (car matrix)))
+
+(define (matrix-row-length matrix)
+  (length matrix))
+
 (define (matrix-size matrix)
-  (values (length matrix)(length (car matrix))))
+  (values (matrix-row-length matrix)
+          (matrix-col-length  matrix)))
 
 (define (walk-matrix walker proc matrix)
   (walker (pa$ walker proc) matrix))
@@ -36,7 +43,7 @@
 (define (for-each-matrix proc matrix)
   (walk-matrix for-each proc matrix))
 
-(define (walk-matrix-with-matrix walker proc matrix)
+(define (walk-matrix-with-index walker proc matrix)
   (let ((x 0)(y 0))
     (walker (lambda (row)
               (set! x 0)
@@ -48,10 +55,10 @@
             matrix)))
 
 (define (map-matrix-with-index proc matrix)
-  (walk-matrix-with-matrix map proc matrix))
+  (walk-matrix-with-index map proc matrix))
 
 (define (for-each-matrix-with-index proc matrix)
-  (walk-matrix-with-matrix for-each proc matrix))
+  (walk-matrix-with-index for-each proc matrix))
 
 (define (print-matrix matrix . keywords)
   (let-keywords* keywords ((printer print)
