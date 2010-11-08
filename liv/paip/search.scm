@@ -1,8 +1,8 @@
 ;; PAIP chapter.6 tree-search
-(define-module
+(define-module liv.paip.search
   (use srfi-1)
   (use gauche.sequence)
-  (use liv.paip.debugs)
+  (use liv.paip.debug)
   (export tree-search binary-tree finite-binary-tree diff sorter
           price-is-right is depth-first-search breadth-first-search
           best-first-search beam-search))
