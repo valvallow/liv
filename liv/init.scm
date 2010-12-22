@@ -13,4 +13,10 @@
 (define (square n)
   (* n n))
 
+(define (triple n)
+  (* n n n))
+
+(define (identities . rest)
+  rest)
+
 (provide "liv/init")
